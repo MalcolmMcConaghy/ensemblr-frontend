@@ -1,3 +1,10 @@
-# react-ts-vite-template
+# Ensemblr
 
-A React with TS and TailwindCSS templete compiled by Vite with SWC
+Organize your Organizations and People with Ensemblr
+
+## Stack
+
+- React with Typescript compiled with Vite with SWC
+- TailwindCSS
+- React Router
+- React Icons
