@@ -7,9 +7,12 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { Auth0Provider } from "@auth0/auth0-react";
 import Layout from "./pages/Layout.tsx";
 import "./index.css";
+import { QueryClient, QueryClientProvider } from "react-query";
+import ModalProvider from "./context/LoginModalContext.tsx";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,14 +30,10 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Auth0Provider
-      domain={import.meta.env.VITE_AUTH0_DOMAIN as string}
-      clientId={import.meta.env.VITE_AUTH0_CLIENT_ID as string}
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-      }}
-    >
-      <RouterProvider router={router} />
-    </Auth0Provider>
+    <QueryClientProvider client={queryClient}>
+      <ModalProvider>
+        <RouterProvider router={router} />
+      </ModalProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );

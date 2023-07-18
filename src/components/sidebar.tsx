@@ -2,11 +2,14 @@ import { useState } from "react";
 import { BiMenu } from "react-icons/bi";
 import Link from "./link";
 import { SlHome, SlOrganization, SlPeople, SlUser } from "react-icons/sl";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useContext } from "react";
+import { ModalContext } from "../context/LoginModalContext";
 
 export default function Sidebar() {
+  const { setIsLoginModalOpen } = useContext(ModalContext);
   const [open, setOpen] = useState(true);
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+
+  const isAuthenticated = false;
 
   return (
     <div className="min-h-screen flex flex-col w-72 antialiased bg-gray-50 text-gray-800">
@@ -29,11 +32,9 @@ export default function Sidebar() {
             {isAuthenticated ? (
               <li
                 className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary text-white hover:text-secondary border-l-4 border-transparent hover:border-secondary pr-6 hover:cursor-pointer"
-                onClick={() =>
-                  void logout({
-                    logoutParams: { returnTo: window.location.origin },
-                  })
-                }
+                onClick={() => {
+                  return;
+                }}
               >
                 <span className="inline-flex justify-center items-center ml-4">
                   <SlUser />
@@ -45,7 +46,7 @@ export default function Sidebar() {
             ) : (
               <li
                 className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary text-white hover:text-secondary border-l-4 border-transparent hover:border-secondary pr-6 hover:cursor-pointer"
-                onClick={() => void loginWithRedirect()}
+                onClick={() => setIsLoginModalOpen(true)}
               >
                 <span className="inline-flex justify-center items-center ml-4">
                   <SlUser />
