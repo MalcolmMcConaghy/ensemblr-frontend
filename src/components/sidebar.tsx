@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiMenu } from "react-icons/bi";
 import Link from "./link";
 import { SlHome, SlOrganization, SlPeople, SlUser } from "react-icons/sl";
 import { useContext } from "react";
 import { ModalContext } from "../context/LoginModalContext";
+import { UserContext } from "../context/UserContext";
 
 export default function Sidebar() {
   const { setIsLoginModalOpen } = useContext(ModalContext);
+  const { user } = useContext(UserContext);
   const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   const isAuthenticated = false;
 
@@ -29,7 +35,7 @@ export default function Sidebar() {
                 </div>
               </div>
             </li>
-            {isAuthenticated ? (
+            {user.email ? (
               <li
                 className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary text-white hover:text-secondary border-l-4 border-transparent hover:border-secondary pr-6 hover:cursor-pointer"
                 onClick={() => {

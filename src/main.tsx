@@ -11,6 +11,7 @@ import Layout from "./pages/Layout.tsx";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import ModalProvider from "./context/LoginModalContext.tsx";
+import UserProvider from "./context/UserContext.tsx";
 
 const queryClient = new QueryClient();
 
@@ -31,9 +32,11 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ModalProvider>
-        <RouterProvider router={router} />
-      </ModalProvider>
+      <UserProvider>
+        <ModalProvider>
+          <RouterProvider router={router} />
+        </ModalProvider>
+      </UserProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );
