@@ -12,6 +12,7 @@ import "./index.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import ModalProvider from "./context/LoginModalContext.tsx";
 import UserProvider from "./context/UserContext.tsx";
+import { CookiesProvider } from "react-cookie";
 
 const queryClient = new QueryClient();
 
@@ -31,12 +32,14 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <ModalProvider>
-          <RouterProvider router={router} />
-        </ModalProvider>
-      </UserProvider>
-    </QueryClientProvider>
+    <CookiesProvider>
+      <QueryClientProvider client={queryClient}>
+        <UserProvider>
+          <ModalProvider>
+            <RouterProvider router={router} />
+          </ModalProvider>
+        </UserProvider>
+      </QueryClientProvider>
+    </CookiesProvider>
   </React.StrictMode>
 );

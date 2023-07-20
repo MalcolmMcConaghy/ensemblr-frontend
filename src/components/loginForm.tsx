@@ -1,18 +1,34 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { loginFields } from "../constants/formFields";
 import Input from "./input";
-import { useQuery } from "react-query";
-import { UserContext } from "../context/UserContext";
-import { ModalContext } from "../context/LoginModalContext";
+import { useQuery, useQueryClient } from "react-query";
+import { UserContext, UserContextType } from "../context/UserContext";
+import { ModalContext, ModalContextType } from "../context/LoginModalContext";
+import { AxiosData, request } from "../api/request";
+
+type FieldsState = {
+  email_address: string;
+  password: string;
+};
+
+type UserData = {
+  name: string;
+  email: string;
+};
 
 const fields = loginFields;
-const fieldsState = {};
-fields.forEach((field) => (fieldsState[field.id] = ""));
+const fieldsState = {} as FieldsState;
+fields.forEach((field) => (fieldsState[field.id as keyof FieldsState] = ""));
 
 export default function LoginForm() {
+  const queryClient = useQueryClient();
   const [loginState, setLoginState] = useState(fieldsState);
-  const { setUser } = useContext(UserContext);
-  const { setIsLoginModalOpen } = useContext(ModalContext);
+  const { setUser } = useContext(UserContext) as UserContextType;
+  const { setIsLoginModalOpen } = useContext(ModalContext) as ModalContextType;
+
+  const invalidateLoginQuery = () => {
+    queryClient.removeQueries({ queryKey: ["postLogin"] });
+  };
 
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
     setLoginState({
@@ -22,31 +38,27 @@ export default function LoginForm() {
   };
 
   const postLogin = async () => {
-    const res = await fetch("http://localhost:3000/api/v1/admin/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
+    const { data } = await request<AxiosData<UserData>>({
+      url: "/admin/login",
+      method: "post",
+      data: {
         email: loginState.email_address,
         password: loginState.password,
-      }),
+      },
     });
 
-    if (res.ok) {
-      return res.json();
-    } else {
-      throw new Error();
-    }
+    return data;
   };
 
-  const { isLoading, error, data, refetch } = useQuery<{
-    data: [{ name: string; email: string }];
-  }>("postLogin", postLogin, {
-    refetchOnWindowFocus: false,
-    enabled: false,
-  });
+  const { isLoading, error, data, refetch } = useQuery<UserData>(
+    "postLogin",
+    postLogin,
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled: false,
+    }
+  );
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,11 +68,14 @@ export default function LoginForm() {
   useEffect(() => {
     if (!data || error) return;
     console.log(data);
-    setUser({ ...data.data });
+    setUser(data);
     setIsLoginModalOpen(false);
+    void invalidateLoginQuery();
   }, [data]);
 
-  if (isLoading) return "Loading...";
+  if (isLoading) {
+    return <div className="text-center">Logging in</div>;
+  }
 
   return (
     <form className="mt-8 space-y-6" onSubmit={(e) => onSubmit(e)}>
@@ -72,7 +87,7 @@ export default function LoginForm() {
           <Input
             key={field.id}
             handleChange={handleChange}
-            value={loginState[field.id]}
+            value={loginState[field.id as keyof FieldsState]}
             labelText={field.labelText}
             labelFor={field.labelFor}
             id={field.id}

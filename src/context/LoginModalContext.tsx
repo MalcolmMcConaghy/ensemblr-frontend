@@ -1,6 +1,11 @@
 import { ReactElement, createContext, useState } from "react";
 
-export const ModalContext = createContext({});
+export const ModalContext = createContext<ModalContextType | null>(null);
+
+export type ModalContextType = {
+  isLoginModalOpen: boolean;
+  setIsLoginModalOpen: (boolean: boolean) => void;
+};
 
 export default function ModalProvider({
   children,

@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import ReactDOM from "react-dom";
-import { ModalContext } from "../context/LoginModalContext";
+import { ModalContext, ModalContextType } from "../context/LoginModalContext";
 import LoginForm from "./loginForm";
 import SignupForm from "./signupForm";
 
 export default function LoginModal() {
-  const { setIsLoginModalOpen } = useContext(ModalContext);
+  const { setIsLoginModalOpen } = useContext(ModalContext) as ModalContextType;
 
   const [heading, setHeading] = useState("Login to your account");
   const [paragraph, setParagraph] = useState("Don't have an account yet?");

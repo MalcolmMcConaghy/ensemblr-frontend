@@ -3,19 +3,47 @@ import { BiMenu } from "react-icons/bi";
 import Link from "./link";
 import { SlHome, SlOrganization, SlPeople, SlUser } from "react-icons/sl";
 import { useContext } from "react";
-import { ModalContext } from "../context/LoginModalContext";
-import { UserContext } from "../context/UserContext";
+import { ModalContext, ModalContextType } from "../context/LoginModalContext";
+import { UserContext, UserContextType } from "../context/UserContext";
+import { AxiosData, request } from "../api/request";
+import { useQuery } from "react-query";
+
+type UserData = {
+  name: string;
+  email: string;
+};
 
 export default function Sidebar() {
-  const { setIsLoginModalOpen } = useContext(ModalContext);
-  const { user } = useContext(UserContext);
+  const { setIsLoginModalOpen } = useContext(ModalContext) as ModalContextType;
+  const { user, setUser } = useContext(UserContext) as UserContextType;
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
     console.log(user);
   }, [user]);
 
-  const isAuthenticated = false;
+  const getLogout = async () => {
+    const { data } = await request<AxiosData<UserData>>({
+      url: "/admin/logout",
+    });
+
+    return data;
+  };
+
+  const { error, data, refetch } = useQuery<UserData>("getLogout", getLogout, {
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
+
+  const logout = () => {
+    void refetch();
+  };
+
+  useEffect(() => {
+    if (!data || error) return;
+    console.log(data);
+    setUser(data);
+  }, [data]);
 
   return (
     <div className="min-h-screen flex flex-col w-72 antialiased bg-gray-50 text-gray-800">
@@ -38,9 +66,7 @@ export default function Sidebar() {
             {user.email ? (
               <li
                 className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary text-white hover:text-secondary border-l-4 border-transparent hover:border-secondary pr-6 hover:cursor-pointer"
-                onClick={() => {
-                  return;
-                }}
+                onClick={logout}
               >
                 <span className="inline-flex justify-center items-center ml-4">
                   <SlUser />
