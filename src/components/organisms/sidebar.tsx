@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { BiMenu } from "react-icons/bi";
-import Link from "./link";
+import Link from "../atom/link";
 import { SlHome, SlOrganization, SlPeople, SlUser } from "react-icons/sl";
 import { useContext } from "react";
-import { ModalContext, ModalContextType } from "../context/LoginModalContext";
-import { UserContext, UserContextType } from "../context/UserContext";
-import { AxiosData, request } from "../api/request";
+import {
+  ModalContext,
+  ModalContextType,
+} from "../../context/LoginModalContext";
+import { UserContext, UserContextType } from "../../context/UserContext";
+import { AxiosData, request } from "../../api/request";
 import { useQuery } from "react-query";
 
 type UserData = {
@@ -18,10 +21,6 @@ export default function Sidebar() {
   const { user, setUser } = useContext(UserContext) as UserContextType;
   const [open, setOpen] = useState(true);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   const getLogout = async () => {
     const { data } = await request<AxiosData<UserData>>({
       url: "/admin/logout",
@@ -30,24 +29,19 @@ export default function Sidebar() {
     return data;
   };
 
-  const { error, data, refetch } = useQuery<UserData>("getLogout", getLogout, {
+  const { refetch } = useQuery<UserData>("getLogout", getLogout, {
     refetchOnWindowFocus: false,
     enabled: false,
   });
 
   const logout = () => {
     void refetch();
+    setUser(null);
   };
 
-  useEffect(() => {
-    if (!data || error) return;
-    console.log(data);
-    setUser(data);
-  }, [data]);
-
   return (
-    <div className="min-h-screen flex flex-col w-72 antialiased bg-gray-50 text-gray-800">
-      <div className="flex flex-col bg-dark-green h-full">
+    <div className="min-h-screen flex flex-col w-80 max-w-sidebar antialiased bg-gray-50 text-gray-800">
+      <div className="flex flex-col bg-dark-green h-full w-full">
         <div className="flex items-center justify-center h-14">
           <div className="text-white text-3xl font-semibold">Ensemblr</div>
         </div>
@@ -63,7 +57,7 @@ export default function Sidebar() {
                 </div>
               </div>
             </li>
-            {user.email ? (
+            {user ? (
               <li
                 className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary text-white hover:text-secondary border-l-4 border-transparent hover:border-secondary pr-6 hover:cursor-pointer"
                 onClick={logout}

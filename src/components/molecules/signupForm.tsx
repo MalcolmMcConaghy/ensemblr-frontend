@@ -1,10 +1,13 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
-import { signupFields } from "../constants/formFields";
-import Input from "./input";
-import { AxiosData, request } from "../api/request";
+import { signupFields } from "../../constants/formFields";
+import Input from "../atom/input";
+import { AxiosData, request } from "../../api/request";
 import { useQuery } from "react-query";
-import { UserContext, UserContextType } from "../context/UserContext";
-import { ModalContext, ModalContextType } from "../context/LoginModalContext";
+import { UserContext, UserContextType } from "../../context/UserContext";
+import {
+  ModalContext,
+  ModalContextType,
+} from "../../context/LoginModalContext";
 
 type FieldsState = {
   name: string;
@@ -61,14 +64,12 @@ export default function SignupForm() {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (loginState.password !== loginState.confirm_password)
-      return console.log(loginState);
+    if (loginState.password !== loginState.confirm_password) return;
     void refetch();
   };
 
   useEffect(() => {
     if (!data || error) return;
-    console.log(data);
     setUser(data);
     setIsLoginModalOpen(false);
   }, [data]);

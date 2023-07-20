@@ -1,8 +1,11 @@
 import { useContext, useState } from "react";
 import ReactDOM from "react-dom";
-import { ModalContext, ModalContextType } from "../context/LoginModalContext";
-import LoginForm from "./loginForm";
-import SignupForm from "./signupForm";
+import {
+  ModalContext,
+  ModalContextType,
+} from "../../context/LoginModalContext";
+import LoginForm from "../molecules/loginForm";
+import SignupForm from "../molecules/signupForm";
 
 export default function LoginModal() {
   const { setIsLoginModalOpen } = useContext(ModalContext) as ModalContextType;
@@ -44,7 +47,7 @@ export default function LoginModal() {
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               {heading}
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-600 mt-5">
+            <p className="text-center text-sm text-gray-600 mt-5">
               {paragraph}{" "}
               <button
                 className="font-medium text-primary"

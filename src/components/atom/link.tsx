@@ -11,7 +11,7 @@ export default function Link({
     <li>
       <a
         href="#"
-        className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary text-white hover:text-secondary border-l-4 border-transparent hover:border-secondary pr-6"
+        className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary text-white hover:text-secondary border-l-4 border-transparent hover:border-secondary"
       >
         <span className="inline-flex justify-center items-center ml-4">
           {icon}

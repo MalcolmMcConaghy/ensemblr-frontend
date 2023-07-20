@@ -1,30 +1,24 @@
+import { useContext } from "react";
 import { useQuery } from "react-query";
+import { UserContext, UserContextType } from "../context/UserContext";
+import LoginWall from "../components/organisms/loginWall";
+import OrganizationCard from "../components/molecules/organizationCard";
 
 export default function Home() {
-  // const fetchOrganization = async () => {
-  //   const res = await fetch("http://localhost:3000/api/v1/organizations/2");
+  const { user } = useContext(UserContext) as UserContextType;
 
-  //   return res.json();
-  // };
-
-  // const { isLoading, error, data } = useQuery<{ data: [{ name: string }] }>(
-  //   "repoData",
-  //   fetchOrganization
-  // );
-
-  // if (isLoading) return "Loading...";
-
-  // if (error) return `An error has occurred: ${error.message}`;
+  if (!user) return <LoginWall />;
 
   return (
     <>
-      {/* {data?.data.map((organization) => {
-        return (
-          <h1 className="text-3xl font-bold underline text-blue-600">
-            {organization.name}
-          </h1>
-        );
-      })} */}
+      <div className="text-black text-2xl font-semibold">
+        Welcome back, {user.name}
+      </div>
+      <OrganizationCard
+        name="FeelsGoodMan Inc"
+        members={87}
+        userEmail="malcolm@feelsgoodman.inc"
+      />
     </>
   );
 }

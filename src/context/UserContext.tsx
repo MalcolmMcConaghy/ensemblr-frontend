@@ -6,14 +6,14 @@ export type User = {
 };
 
 export type UserContextType = {
-  user: User;
-  setUser: (user: User) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
 };
 
 export const UserContext = createContext<UserContextType | null>(null);
 
 export default function UserProvider({ children }: { children: ReactElement }) {
-  const [user, setUser] = useState<User>({ name: "", email: "" });
+  const [user, setUser] = useState<User | null>(null);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

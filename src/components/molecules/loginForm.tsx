@@ -1,10 +1,13 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
-import { loginFields } from "../constants/formFields";
-import Input from "./input";
+import { loginFields } from "../../constants/formFields";
+import Input from "../atom/input";
 import { useQuery, useQueryClient } from "react-query";
-import { UserContext, UserContextType } from "../context/UserContext";
-import { ModalContext, ModalContextType } from "../context/LoginModalContext";
-import { AxiosData, request } from "../api/request";
+import { UserContext, UserContextType } from "../../context/UserContext";
+import {
+  ModalContext,
+  ModalContextType,
+} from "../../context/LoginModalContext";
+import { AxiosData, request } from "../../api/request";
 
 type FieldsState = {
   email_address: string;
@@ -67,7 +70,6 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (!data || error) return;
-    console.log(data);
     setUser(data);
     setIsLoginModalOpen(false);
     void invalidateLoginQuery();

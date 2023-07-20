@@ -9,6 +9,9 @@ export default {
         "dark-green": "#001011",
         "bone-white": "#F7F9F9",
       },
+      maxWidth: {
+        sidebar: "270px",
+      },
     },
   },
   plugins: [],
