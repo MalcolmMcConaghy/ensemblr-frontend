@@ -11,7 +11,7 @@ export default function Layout() {
     <>
       <div className="flex bg-bone-white">
         <Sidebar />
-        <div className="px-12 py-6">
+        <div className="px-12 py-6 w-full">
           <Outlet />
         </div>
       </div>
