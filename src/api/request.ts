@@ -21,7 +21,7 @@ export const request = async <T>(config: AxiosRequestConfig): Promise<T> => {
 
 function getApiUrl() {
   const devApi = new URL("http://localhost:3000/api/v1");
-  const prodApi = new URL("http://localhost:3000/api/v1");
+  const prodApi = new URL("http://13.40.158.3//api/v1");
 
   switch (import.meta.env.MODE) {
     case "prod":

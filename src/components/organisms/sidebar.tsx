@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { BiMenu } from "react-icons/bi";
+// import { useState } from "react";
+// import { BiMenu } from "react-icons/bi";
 import Link from "../atom/link";
 import { SlHome, SlOrganization, SlPeople, SlUser } from "react-icons/sl";
 import { useContext } from "react";
@@ -19,7 +19,7 @@ type UserData = {
 export default function Sidebar() {
   const { setIsLoginModalOpen } = useContext(ModalContext) as ModalContextType;
   const { user, setUser } = useContext(UserContext) as UserContextType;
-  const [open, setOpen] = useState(true);
+  // const [open, setOpen] = useState(true);
 
   const getLogout = async () => {
     const { data } = await request<AxiosData<UserData>>({

@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { useQuery } from "react-query";
 import { UserContext, UserContextType } from "../context/UserContext";
 import LoginWall from "../components/organisms/loginWall";
 import OrganizationCard from "../components/molecules/organizationCard";
